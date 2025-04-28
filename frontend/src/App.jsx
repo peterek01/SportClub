@@ -10,8 +10,10 @@ import Register from "./components/Register";
 import Dashboard from "./components/Dashboard";
 // import CourseClasses from "./components/admin/CourseClasses";
 import API_BASE_URL from "./api/api";
+import { usePingBackend } from "./hooks/usePingBackend";
 
 function App() {
+  usePingBackend();
   const [token, setToken] = useState(localStorage.getItem("token") || null);
   const [role, setRole] = useState(localStorage.getItem("role") || null);
 
