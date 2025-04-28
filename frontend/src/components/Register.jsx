@@ -57,14 +57,14 @@ function Register() {
                 </div>
 
                 <div className="w-full md:w-1/2 p-8 md:p-10">
-                    <form onSubmit={handleSubmit} className="text-gray-800 font-bold">
+                    <form onSubmit={handleSubmit} className="relative text-gray-800 font-bold w-full max-w-md mx-auto p-8 bg-white min-h-[500px]">
                         {error && <p className="text-red-500">{error}</p>}
-                        <button type="button" onClick={() => navigate("/")} className="absolute top-12 right-60 z-50 flex items-center justify-center p-4 rounded-full bg-blue-600 text-white shadow-lg animate-pulse border-2 border-white hover:scale-105 hover:shadow-blue-500 transition-transform" title="Back to Home">
+                        <button type="button" onClick={() => navigate("/")} className="absolute top-0 right-0 z-50 flex items-center justify-center p-3 rounded-full bg-blue-600 text-white shadow-lg animate-pulse border-2 border-white hover:scale-105 hover:shadow-blue-500 transition-transform" title="Back to Home">
                             <Home size={24} strokeWidth={2.5} className="drop-shadow-glow" />
                         </button>
-                        <h2 className="text-[35px] text-center mb-10">Register Form</h2>
+                        <h2 className="text-[35px] text-center mt-10">Register Form</h2>
 
-                        <div className="flex gap-4 mb-7">
+                        <div className="flex gap-4 mt-10">
                             <input 
                                 type="text" 
                                 name="first_name" 
