@@ -8,7 +8,8 @@ import Home from "./components/Home";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Dashboard from "./components/Dashboard";
-import ProtectedPage from "./components/ProtectedPage";
+import CourseClasses from "./components/admin/CourseClasses";
+// import ProtectedPage from "./components/ProtectedPage";
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem("token") || null);
@@ -61,7 +62,7 @@ function App() {
           <Route path="/login" element={<Login setToken={setToken} />} />
           <Route path="/register" element={<Register />} />
           <Route path="/dashboard" element={<Dashboard role={role} />} />
-          <Route path="/protectedPage" element={token ? <ProtectedPage /> : <Navigate to="/login" />} />
+          {/* <Route path="/courses/:courseId/classes" element={<CourseClasses />} /> */}
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </div>

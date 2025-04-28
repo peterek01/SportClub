@@ -9,7 +9,7 @@ from flask_jwt_extended import create_access_token, create_refresh_token, jwt_re
 # To create own decorators - here we use it in admin_required
 from functools import wraps
 from app import db
-from app.models import User, ClassRegistration
+from app.models import User
 
 # All paths will have prefix: /api/auth/
 auth_bp = Blueprint("auth", __name__)
@@ -105,11 +105,11 @@ def refresh():
 
 
 # any logged-in user can access /protected if they provide a JWT token
-@auth_bp.route('/protected', methods=['GET'])
-@jwt_required()
-def protected():
-    current_user = get_jwt_identity()
-    return jsonify(msg=f"Hello {current_user}, you are logged in and can access this route.")
+# @auth_bp.route('/protected', methods=['GET'])
+# @jwt_required()
+# def protected():
+#     current_user = get_jwt_identity()
+#     return jsonify(msg=f"Hello {current_user}, you are logged in and can access this route.")
 
 
 @auth_bp.route('/me', methods=['GET'])
@@ -141,15 +141,33 @@ def get_user_classes():
     if not user:
         return jsonify({"error": "User not found"}), 404
 
-    registrations = ClassRegistration.query.filter_by(user_id=user.id).all()
-    classes = [registration.course_class for registration in registrations]
-
     return jsonify([{
         "id": course_class.id,
         "course_name": course_class.course.name,
         "trainer": course_class.trainer,
-        "course_date": course_class.date
-    } for course_class in classes]), 200
+        "day_of_week": course_class.day_of_week,
+        "time": course_class.time,
+        "location": course_class.location,
+        "available_spots": course_class.available_spots,
+        "total_max_spots": course_class.total_max_spots
+    } for course_class in user.classes]), 200
+
+
+@auth_bp.route("/delete-account", methods=["DELETE"])
+@jwt_required()
+def delete_account():
+    user_id = get_jwt_identity()
+    user = User.query.get(user_id)
+
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+
+    user.classes.clear()
+
+    db.session.delete(user)
+    db.session.commit()
+
+    return jsonify({"message": "Account deleted successfully"}), 200
 
 
 # Decorator to check if user is an administrator
@@ -164,14 +182,6 @@ def admin_required(f):
         return f(*args, **kwargs)
 
     return decorated_function
-
-
-# route available only for admins
-@auth_bp.route('/adminonly', methods=['GET'])
-@jwt_required()
-@admin_required
-def admin_only():
-    return jsonify(msg="Welcome, admin. This is an admin-only endpoint.")
 
 
 # curl -H "Authorization: Bearer <token>" http://127.0.0.1:5000/api/auth/me

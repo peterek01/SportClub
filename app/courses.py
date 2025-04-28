@@ -2,10 +2,11 @@ from datetime import datetime
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app import db
-from app.models import Course, CourseClass, ClassRegistration, User
+from app.models import Course, CourseClass, User
 from app.auth import admin_required
 
 courses_bp = Blueprint("courses", __name__, url_prefix="/api/courses")
+classes_bp = Blueprint("classes", __name__, url_prefix="/api/classes")
 
 
 @courses_bp.route('/', methods=['POST'])
@@ -14,7 +15,7 @@ courses_bp = Blueprint("courses", __name__, url_prefix="/api/courses")
 def create_course():
     data = request.json
 
-    if not all(k in data for k in ['name', 'description', 'available_spots']):
+    if not all(k in data for k in ['name', 'description']):
         return jsonify({"error": "Missing required fields"}), 400
 
     existing_course = Course.query.filter_by(name=data["name"]).first()
@@ -24,7 +25,6 @@ def create_course():
     new_course = Course(
         name=data["name"],
         description=data["description"],
-        available_spots=data["available_spots"]
     )
 
     db.session.add(new_course)
@@ -37,12 +37,16 @@ def create_course():
 def get_public_courses():
     courses = Course.query.all()
 
-    return jsonify([{
-        "id": course.id,
-        "name": course.name,
-        "description": course.description,
-        "available_spots": course.available_spots
-    } for course in courses]), 200
+    return jsonify([
+        {
+            "id": course.id,
+            "name": course.name,
+            "description": course.description,
+            "class_count": len(course.classes),
+            "total_available_spots": sum(c.available_spots for c in course.classes),
+        }
+        for course in courses
+    ]), 200
 
 
 @courses_bp.route("/my-courses", methods=["GET"])
@@ -50,6 +54,7 @@ def get_public_courses():
 def get_user_courses():
     user_id = get_jwt_identity()
     user = User.query.get(user_id)
+
     if not user:
         return jsonify({"error": "User not found"}), 404
 
@@ -60,28 +65,28 @@ def get_user_courses():
     } for course in user.courses]), 200
 
 
-@courses_bp.route("/<int:course_id>/join", methods=["POST"])
+@classes_bp.route("/<int:class_id>/join", methods=["POST"])
 @jwt_required()
-def join_course(course_id):
+def join_class(class_id):
     user_id = get_jwt_identity()
-    user = User.query.get(user_id)
-    course = Course.query.get(course_id)
+    user = User.query.get(int(user_id))
+    course_class = CourseClass.query.get(class_id)
 
-    if not user or not course:
-        return jsonify({"error": "User or course not found"}), 404
+    if not user or not course_class:
+        return jsonify({"error": "User or class not found"}), 404
 
-    if course in user.courses:
-        return jsonify({"error": "Already joined this course"}), 409
+    if course_class in user.classes:
+        return jsonify({"error": "You are already registered in this class."}), 409
 
-    if course.available_spots <= 0:
-        return jsonify({"error": "No available spots in this course"}), 400
+    if course_class.available_spots <= 0:
+        return jsonify({"error": "No available spots in this class"}), 400
 
-    user.courses.append(course)
-    course.available_spots -= 1
+    user.classes.append(course_class)
+    course_class.available_spots -= 1
 
     db.session.commit()
 
-    return jsonify({"message": "Successfully joined the course!"}), 200
+    return jsonify({"message": "Successfully joined the classes!"}), 200
 
 
 @courses_bp.route('/<int:course_id>/classes', methods=['POST'])
@@ -94,14 +99,17 @@ def add_course_class(course_id):
     if not course:
         return jsonify({"error": "Course not found"}), 404
 
-    if not all(k in data for k in ["date", "location", "trainer"]):
+    if not all(k in data for k in ["day_of_week", "time", "location", "trainer", "available_spots"]):
         return jsonify({"error": "Missing required fields"}), 400
 
     new_class = CourseClass(
         course_id=course.id,
-        date=data["date"],
+        day_of_week=data["day_of_week"],
+        time=data["time"],
         location=data["location"],
-        trainer=data["trainer"]
+        trainer=data["trainer"],
+        available_spots=data["available_spots"],
+        total_max_spots=data["available_spots"]
     )
 
     db.session.add(new_class)
@@ -121,9 +129,12 @@ def get_course_classes(course_id):
 
     return jsonify([{
         "id": c.id,
-        "date": c.date,
+        "day_of_week": c.day_of_week,
+        "time": c.time,
         "location": c.location,
-        "trainer": c.trainer
+        "trainer": c.trainer,
+        "available_spots": c.available_spots,
+        "total_max_spots": c.total_max_spots,
     } for c in classes]), 200
 
 
@@ -136,18 +147,52 @@ def get_user_classes():
     if not user:
         return jsonify({"error": "User not found"}), 404
 
-    registrations = ClassRegistration.query.filter_by(user_id=user.id).all()
-    classes = [registration.course_class for registration in registrations]
-
-    if not classes:
+    if not user.classes:
         return jsonify({"classes": [], "message": "No classes enrolled yet"}), 200
 
     return jsonify([{
         "id": course_class.id,
         "course_name": course_class.course.name,
         "trainer": course_class.trainer,
-        "course_date": course_class.date
-    } for course_class in classes]), 200
+        "day_of_week": course_class.day_of_week,
+        "time": course_class.time
+    } for course_class in user.classes]), 200
+
+
+@classes_bp.route("/<int:class_id>/leave", methods=["DELETE"])
+@jwt_required()
+def leave_class(class_id):
+    user_id = get_jwt_identity()
+    user = User.query.get(user_id)
+    course_class = CourseClass.query.get(class_id)
+
+    if not user or not course_class:
+        return jsonify({"error": "User or class not found"}), 404
+
+    if course_class not in user.classes:
+        return jsonify({"error": "You are not registered in this class"}), 400
+
+    user.classes.remove(course_class)
+    course_class.available_spots += 1
+    db.session.commit()
+
+    return jsonify({"message": "Successfully left the class"}), 200
+
+
+@classes_bp.route("/<int:class_id>/members", methods=["GET"])
+@jwt_required()
+@admin_required
+def get_class_members(class_id):
+    course_class = CourseClass.query.get(class_id)
+    if not course_class:
+        return jsonify({"error": "Class not found"}), 404
+
+    members = course_class.users
+    return jsonify([{
+        "id": user.id,
+        "first_name": user.first_name,
+        "last_name": user.last_name
+    } for user in members]), 200
 
 
 @courses_bp.route('/<int:course_id>', methods=['PUT'])
@@ -166,12 +211,6 @@ def update_course(course_id):
     if "description" in data:
         course.description = data["description"]
 
-    if "available_spots" in data:
-        try:
-            course.available_spots = int(data["available_spots"])
-        except ValueError:
-            return jsonify({"error": "available_spots must be an integer"}), 400
-
     db.session.commit()
 
     return jsonify({"message": "Course updated successfully!"}), 200
@@ -187,17 +226,23 @@ def update_course_class(course_id, class_id):
     if not course_class:
         return jsonify({"error": "Class not found"}), 404
 
-    if "date" in data:
-        try:
-            course_class.date = (datetime.strptime(data["date"], "%Y-%m-%d %H:%M").strftime("%Y-%m-%d %H:%M"))
-        except ValueError:
-            return jsonify({"error": "Invalid date format. Use YYYY-MM-DD HH:MM"}), 400
+    if "day_of_week" in data:
+        course_class.day_of_week = data["day_of_week"]
+
+    if "time" in data:
+        course_class.time = data["time"]
 
     if "location" in data:
         course_class.location = data["location"]
 
     if "trainer" in data:
         course_class.trainer = data["trainer"]
+
+    if "available_spots" in data:
+        try:
+            course_class.available_spots = int(data["available_spots"])
+        except ValueError:
+            return jsonify({"error": "available_spots must be an integer"}), 400
 
     db.session.commit()
 
@@ -213,7 +258,9 @@ def delete_course(course_id):
     if not course:
         return jsonify({"error": "Course not found"}), 404
 
-    CourseClass.query.filter_by(course_id=course_id).delete()
+    for class_instance in course.classes:
+        db.session.delete(class_instance)
+
     db.session.delete(course)
     db.session.commit()
 
@@ -228,6 +275,8 @@ def delete_class(course_id, class_id):
 
     if not course_class:
         return jsonify({"error": "Class not found"}), 404
+
+    course_class.users.clear()
 
     db.session.delete(course_class)
     db.session.commit()

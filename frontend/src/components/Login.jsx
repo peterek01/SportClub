@@ -50,7 +50,7 @@ function Login({ setToken }) {
         <div className="w-full md:w-1/2 p-8">
           <form onSubmit={handleSubmit} className="text-gray-800 font-bold">
             {error && <p className="text-red-500">{error}</p>}
-            <button onClick={() => navigate("/")} className="absolute top-10 right-52 z-50 flex items-center justify-center p-4 rounded-full bg-blue-600 text-white shadow-lg animate-pulse border-2 border-white hover:scale-105 hover:shadow-blue-500 transition-transform" title="Back to Home">
+            <button onClick={() => navigate("/")} className="absolute top-12 right-60 z-50 flex items-center justify-center p-4 rounded-full bg-blue-600 text-white shadow-lg animate-pulse border-2 border-white hover:scale-105 hover:shadow-blue-500 transition-transform" title="Back to Home">
                 <Home size={24} strokeWidth={2.5} className="drop-shadow-glow" />
             </button>
             <h2 className="text-[35px] text-center mb-12 m-28">Log In</h2>

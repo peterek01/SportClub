@@ -4,7 +4,6 @@ function AddCourseForm({ onSuccess }) {
     const [formData, setFormData] = useState({
         name: '',
         description: '',
-        available_spots: ''
     });
 
     const [error, setError] = useState('');
@@ -47,9 +46,7 @@ function AddCourseForm({ onSuccess }) {
     };
 
     return (
-        <div className="max-w-md mx-auto p-6 bh-white shadow-md rounded">
-            <h2 className="text-2xl font-bold mb-4">Add New Course</h2>
-
+        <>
             {error && <p className="text-red-500 mb-2">{error}</p>}
             {success && <p className="text-green-500 mb-2">Course Added</p>}
 
@@ -71,16 +68,6 @@ function AddCourseForm({ onSuccess }) {
                     required
                     className="w-full border p-2 rounded"
                 ></textarea>
-                <input
-                    type="number"
-                    name="available_spots"
-                    placeholder="Available Spots"
-                    value={formData.available_spots}
-                    onChange={handleChange}
-                    required
-                    min="1"
-                    className="w-full border p-2 rounded"
-                />
                 <button
                     type="submit"
                     className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
@@ -88,7 +75,7 @@ function AddCourseForm({ onSuccess }) {
                     ➕ Add Course
                 </button>
             </form>
-        </div>
+        </>
     );
 }
 
