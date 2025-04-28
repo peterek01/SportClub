@@ -14,7 +14,6 @@ function UserDashboard() {
   const token = useTokenExpiry();
   const [courses, setCourses] = useState([]);
   const [userClasses, setUserClasses] = useState([]);
-  // const [error, setError] = useState("");
   const [showAddForm, setShowAddForm] = useState(false);
   const [editingCourse, setEditingCourse] = useState(null);
   const [addingClassCourseId, setAddingClassCourseId] = useState(null);
@@ -31,7 +30,7 @@ function UserDashboard() {
 
   const fetchCourses = () => {
     const token = localStorage.getItem("token");
-    fetch(`${API_BASE_URL}/api/courses/public`)
+    fetch(`${API_BASE_URL}/courses/public`)
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {
@@ -49,7 +48,7 @@ function UserDashboard() {
 
   const fetchUserClasses = () => {
     const token = localStorage.getItem("token");
-    fetch(`${API_BASE_URL}/api/auth/my-classes`, {
+    fetch(`${API_BASE_URL}/auth/my-classes`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => {
@@ -88,7 +87,7 @@ function UserDashboard() {
     const token = localStorage.getItem("token");
     try {
       const response = await fetch(
-        `${API_BASE_URL}/api/courses/${courseToDelete}`,
+        `${API_BASE_URL}/courses/${courseToDelete}`,
         {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },
@@ -107,7 +106,7 @@ function UserDashboard() {
     const token = localStorage.getItem("token");
   
     try {
-      const response = await fetch(`${API_BASE_URL}/api/classes/${classToLeave}/leave`, {
+      const response = await fetch(`${API_BASE_URL}/classes/${classToLeave}/leave`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -130,7 +129,7 @@ function UserDashboard() {
     const token = localStorage.getItem("token");
   
     try {
-      const res = await fetch(`${API_BASE_URL}/api/auth/delete-account`, {
+      const res = await fetch(`${API_BASE_URL}/auth/delete-account`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,

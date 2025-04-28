@@ -28,7 +28,7 @@ function App() {
   useEffect(() => {
     if (!token || token === "undefined") return;
     
-    fetch(`${API_BASE_URL}/api/auth/me`, {
+    fetch(`${API_BASE_URL}/auth/me`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

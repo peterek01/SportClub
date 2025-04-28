@@ -18,7 +18,7 @@ function CourseClasses({ courseId, courseName, allowJoin = false, onClose, refre
     const fetchMembers = async (classId) => {
         const token = localStorage.getItem("token");
         try {
-          const res = await fetch(`${API_BASE_URL}/api/classes/${classId}/members`, {
+          const res = await fetch(`${API_BASE_URL}/classes/${classId}/members`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -42,7 +42,7 @@ function CourseClasses({ courseId, courseName, allowJoin = false, onClose, refre
 
     const fetchClasses = () => {
         const token = localStorage.getItem("token");
-        fetch(`${API_BASE_URL}/api/courses/${courseId}/classes`, {
+        fetch(`${API_BASE_URL}/courses/${courseId}/classes`, {
           headers: { Authorization: `Bearer ${token}` },
         })
           .then((res) => res.json())
@@ -53,7 +53,7 @@ function CourseClasses({ courseId, courseName, allowJoin = false, onClose, refre
     const fetchUserJoinedClasses = () => {
         const token = localStorage.getItem("token");
       
-        fetch(`${API_BASE_URL}/api/auth/my-classes`, {
+        fetch(`${API_BASE_URL}/auth/my-classes`, {
           headers: { Authorization: `Bearer ${token}` },
         })
           .then((res) => res.json())
@@ -66,7 +66,7 @@ function CourseClasses({ courseId, courseName, allowJoin = false, onClose, refre
         const token = localStorage.getItem("token");
       
         try {
-          const res = await fetch(`${API_BASE_URL}/api/classes/${classId}/join`, {
+          const res = await fetch(`${API_BASE_URL}/classes/${classId}/join`, {
             method: "POST",
             headers: {
               Authorization: `Bearer ${token}`,
@@ -107,7 +107,7 @@ function CourseClasses({ courseId, courseName, allowJoin = false, onClose, refre
 
     try {
       const res = await fetch(
-        `${API_BASE_URL}/api/courses/${courseId}/classes/${classToDelete.id}`,
+        `${API_BASE_URL}/courses/${courseId}/classes/${classToDelete.id}`,
         {
           method: "DELETE",
           headers: {

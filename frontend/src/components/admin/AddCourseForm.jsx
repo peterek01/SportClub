@@ -21,7 +21,7 @@ function AddCourseForm({ onSuccess }) {
 
         try {
             const token = localStorage.getItem("token");
-            const res = await fetch(`${API_BASE_URL}/api/courses/`, {
+            const res = await fetch(`${API_BASE_URL}/courses/`, {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json",

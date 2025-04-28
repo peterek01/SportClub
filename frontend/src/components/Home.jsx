@@ -7,7 +7,7 @@ function Home() {
     const [courses, setCourses] = useState([]);
 
     useEffect(() => {
-        fetch(`${API_BASE_URL}/api/courses/public`)
+        fetch(`${API_BASE_URL}/courses/public`)
             .then((res) => res.json())
             .then((data) => {
                 setCourses(data)

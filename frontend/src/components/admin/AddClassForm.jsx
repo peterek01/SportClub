@@ -26,7 +26,7 @@ function AddClassForm({ courseId, onSuccess }) {
         e.preventDefault();
 
         try {
-            const response = await fetch(`${API_BASE_URL}/api/courses/${courseId}/classes`, {
+            const response = await fetch(`${API_BASE_URL}/courses/${courseId}/classes`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

@@ -42,7 +42,6 @@ function Register() {
             localStorage.setItem("tokenExpiry", expiryTime);
 
             navigate("/dashboard");
-            // setToken(data.access_token);
         } catch (err) {
             console.error("Registration error:", err);
             setError("Registration failed. Please try again later.")

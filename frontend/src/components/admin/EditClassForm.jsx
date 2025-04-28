@@ -29,7 +29,7 @@ function EditClassForm({ classItem, courseId, onSuccess, onCancel }) {
         const token = localStorage.getItem("token");
 
         try {
-            const response = await fetch(`${API_BASE_URL}/api/courses/${courseId}/classes/${classItem.id}`, {
+            const response = await fetch(`${API_BASE_URL}/courses/${courseId}/classes/${classItem.id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
