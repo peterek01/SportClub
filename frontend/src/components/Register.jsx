@@ -49,10 +49,10 @@ function Register() {
     };
 
     return (
-        <div className="w-full h-screen bg-gradient-to-br from-[#000046] to-[#1cb5e0] flex items-center justify-center">
-            <div className="bg-white rounded-lg w-[70vw] h-[90vh] flex flex-col md:flex-row overflow-hidden my-44 font-['Nunito'] shadow-lg">
+        <div className="w-full min-h-screen bg-gradient-to-br from-[#000046] to-[#1cb5e0] flex items-center justify-center p-4 sm:p-8">
+            <div className="bg-white rounded-lg w-full max-w-5xl flex flex-col md:flex-row overflow-hidden font-['Nunito'] shadow-lg">
 
-                <div className="hidden md:block md:w-1/2">
+                <div className="hidden md:block md:w-1/2 max-h-[700px] overflow-hidden">
                     <img src="/images/register-logo.jpg" alt="form" className="h-full w-full object-fill" />
                 </div>
 
@@ -140,7 +140,7 @@ function Register() {
 
                         <div className="text-center">
                             <input type="submit" value="Register"
-                            className="bg-[#fe892a] hover:bg-[#e37b27] text-white text-[18px] font-bold py-3 px-10 rounded-md shadow-md cursor-pointer" />
+                            className="bg-[#fe892a] hover:bg-[#e37b27] text-white text-[20px] font-bold py-2 px-8 rounded-md shadow-md cursor-pointer" />
                         </div>
                     </form>
                 </div>
