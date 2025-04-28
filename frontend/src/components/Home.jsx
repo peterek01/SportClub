@@ -51,14 +51,11 @@ function Home() {
                         key={course.id}
                         className="bg-white rounded-xl shadow-lg overflow-hidden w-full max-w-sm flex flex-col items-center text-center"
                     >
-                        {/* Zdjęcie kursu */}
                         <img
                         src={`/images/${course.name.toLowerCase()}.jpg`}
                         alt={course.name}
                         className="w-full h-48 object-cover"
                         />
-
-                        {/* Treść kursu */}
                         <div className="p-4 flex flex-col gap-2">
                         <h3 className="text-xl font-bold text-blue-700">{course.name}</h3>
                         <p className="text-gray-700 text-sm text-justify">{course.description}</p>

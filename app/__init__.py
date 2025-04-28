@@ -37,6 +37,10 @@ def create_app():
     app.register_blueprint(courses_bp, url_prefix="/api/courses")
     app.register_blueprint(classes_bp, url_prefix="/api/classes")
 
+    @app.route("/")
+    def index():
+        return "SportClub backend is up and running. Check the endpoint: https://sportclub-p8o2.onrender.com/api/courses/public"
+
     # with app.app_context():
     #     db.create_all()
 
