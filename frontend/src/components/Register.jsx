@@ -52,7 +52,7 @@ function Register() {
         <div className="w-full min-h-screen bg-gradient-to-br from-[#000046] to-[#1cb5e0] flex items-center justify-center p-4 sm:p-8">
             <div className="bg-white rounded-lg w-full max-w-5xl flex flex-col md:flex-row overflow-hidden font-['Nunito'] shadow-lg">
 
-                <div className="hidden md:block md:w-1/2 max-h-[700px] overflow-hidden">
+                <div className="hidden md:block md:w-1/2 max-h-[750px] overflow-hidden">
                     <img src="/images/register-logo.jpg" alt="form" className="h-full w-full object-fill" />
                 </div>
 
