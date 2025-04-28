@@ -1,4 +1,5 @@
 import { useState } from "react";
+import API_BASE_URL from "../../api/api";
 
 function EditCourseForm({ course, onSuccess, onCancel }) {
   const [formData, setFormData] = useState({
@@ -24,7 +25,7 @@ function EditCourseForm({ course, onSuccess, onCancel }) {
     const token = localStorage.getItem("token");
 
     try {
-      const res = await fetch(`http://127.0.0.1:5000/api/courses/${course.id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/courses/${course.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

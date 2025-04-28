@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import useRole from "../../hooks/useRole";
 import EditClassForm from "./EditClassForm";
 import Modal from "../common/Modal";
+import API_BASE_URL from "../../api/api";
 
 function CourseClasses({ courseId, courseName, allowJoin = false, onClose, refreshUserClasses }) {
     const [classes, setClasses] = useState([]);
@@ -17,7 +18,7 @@ function CourseClasses({ courseId, courseName, allowJoin = false, onClose, refre
     const fetchMembers = async (classId) => {
         const token = localStorage.getItem("token");
         try {
-          const res = await fetch(`http://127.0.0.1:5000/api/classes/${classId}/members`, {
+          const res = await fetch(`${API_BASE_URL}/api/classes/${classId}/members`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -41,7 +42,7 @@ function CourseClasses({ courseId, courseName, allowJoin = false, onClose, refre
 
     const fetchClasses = () => {
         const token = localStorage.getItem("token");
-        fetch(`http://127.0.0.1:5000/api/courses/${courseId}/classes`, {
+        fetch(`${API_BASE_URL}/api/courses/${courseId}/classes`, {
           headers: { Authorization: `Bearer ${token}` },
         })
           .then((res) => res.json())
@@ -52,7 +53,7 @@ function CourseClasses({ courseId, courseName, allowJoin = false, onClose, refre
     const fetchUserJoinedClasses = () => {
         const token = localStorage.getItem("token");
       
-        fetch("http://127.0.0.1:5000/api/auth/my-classes", {
+        fetch(`${API_BASE_URL}/api/auth/my-classes`, {
           headers: { Authorization: `Bearer ${token}` },
         })
           .then((res) => res.json())
@@ -65,7 +66,7 @@ function CourseClasses({ courseId, courseName, allowJoin = false, onClose, refre
         const token = localStorage.getItem("token");
       
         try {
-          const res = await fetch(`http://127.0.0.1:5000/api/classes/${classId}/join`, {
+          const res = await fetch(`${API_BASE_URL}/api/classes/${classId}/join`, {
             method: "POST",
             headers: {
               Authorization: `Bearer ${token}`,
@@ -106,7 +107,7 @@ function CourseClasses({ courseId, courseName, allowJoin = false, onClose, refre
 
     try {
       const res = await fetch(
-        `http://127.0.0.1:5000/api/courses/${courseId}/classes/${classToDelete.id}`,
+        `${API_BASE_URL}/api/courses/${courseId}/classes/${classToDelete.id}`,
         {
           method: "DELETE",
           headers: {

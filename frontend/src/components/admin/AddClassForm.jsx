@@ -1,4 +1,5 @@
 import { useState } from "react";
+import API_BASE_URL from "../../api/api";
 
 function AddClassForm({ courseId, onSuccess }) {
     const [successMessage, setSuccessMessage] = useState("");
@@ -25,7 +26,7 @@ function AddClassForm({ courseId, onSuccess }) {
         e.preventDefault();
 
         try {
-            const response = await fetch(`http://127.0.0.1:5000/api/courses/${courseId}/classes`, {
+            const response = await fetch(`${API_BASE_URL}/api/courses/${courseId}/classes`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

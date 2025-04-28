@@ -25,14 +25,3 @@ function useTokenExpiry() {
 }
 
 export default useTokenExpiry;
-
-
-// const expiry = localStorage.getItem("tokenExpiry");
-// const now = Date.now();
-
-// if (expiry) {
-//   const diffMs = parseInt(expiry) - now;
-//   const minutes = Math.floor(diffMs / 60000);
-//   const seconds = Math.floor((diffMs % 60000) / 1000);
-//   console.log(`🕒 Pozostały czas sesji: ${minutes}m ${seconds}s`);
-// }

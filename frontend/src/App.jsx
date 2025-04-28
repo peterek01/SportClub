@@ -8,8 +8,8 @@ import Home from "./components/Home";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Dashboard from "./components/Dashboard";
-import CourseClasses from "./components/admin/CourseClasses";
-// import ProtectedPage from "./components/ProtectedPage";
+// import CourseClasses from "./components/admin/CourseClasses";
+import API_BASE_URL from "./api/api";
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem("token") || null);
@@ -28,7 +28,7 @@ function App() {
   useEffect(() => {
     if (!token || token === "undefined") return;
     
-    fetch("http://127.0.0.1:5000/api/auth/me", {
+    fetch(`${API_BASE_URL}/api/auth/me`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { LogIn, UserPlus } from 'lucide-react';
+import API_BASE_URL from "../api/api";
 
 function Home() {
     const [courses, setCourses] = useState([]);
 
     useEffect(() => {
-        fetch("http://127.0.0.1:5000/api/courses/public")
+        fetch(`${API_BASE_URL}/api/courses/public`)
             .then((res) => res.json())
             .then((data) => {
                 setCourses(data)

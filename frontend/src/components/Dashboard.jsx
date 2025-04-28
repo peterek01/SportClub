@@ -8,6 +8,7 @@ import EditCourseForm from "./admin/EditCourseForm";
 import AddClassForm from "./admin/AddClassForm";
 import CourseClasses from "./admin/CourseClasses";
 import Modal from "./common/Modal";
+import API_BASE_URL from "../api/api";
 
 function UserDashboard() {
   const token = useTokenExpiry();
@@ -30,7 +31,7 @@ function UserDashboard() {
 
   const fetchCourses = () => {
     const token = localStorage.getItem("token");
-    fetch("http://127.0.0.1:5000/api/courses/public")
+    fetch(`${API_BASE_URL}/api/courses/public`)
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {
@@ -48,7 +49,7 @@ function UserDashboard() {
 
   const fetchUserClasses = () => {
     const token = localStorage.getItem("token");
-    fetch("http://127.0.0.1:5000/api/auth/my-classes", {
+    fetch(`${API_BASE_URL}/api/auth/my-classes`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => {
@@ -87,7 +88,7 @@ function UserDashboard() {
     const token = localStorage.getItem("token");
     try {
       const response = await fetch(
-        `http://127.0.0.1:5000/api/courses/${courseToDelete}`,
+        `${API_BASE_URL}/api/courses/${courseToDelete}`,
         {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },
@@ -106,7 +107,7 @@ function UserDashboard() {
     const token = localStorage.getItem("token");
   
     try {
-      const response = await fetch(`http://127.0.0.1:5000/api/classes/${classToLeave}/leave`, {
+      const response = await fetch(`${API_BASE_URL}/api/classes/${classToLeave}/leave`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -129,7 +130,7 @@ function UserDashboard() {
     const token = localStorage.getItem("token");
   
     try {
-      const res = await fetch("http://127.0.0.1:5000/api/auth/delete-account", {
+      const res = await fetch(`${API_BASE_URL}/api/auth/delete-account`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,

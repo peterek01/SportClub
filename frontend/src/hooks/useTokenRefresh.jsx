@@ -44,22 +44,3 @@ function useTokenRefresh(setToken) {
 
 export default useTokenRefresh;
 
-
-// import { useEffect } from "react";
-// import { refreshToken } from "../api/api";
-
-// function useTokenRefresh(setToken) {
-//   useEffect(() => {
-//     const runRefresh = async () => {
-//       const newToken = await refreshToken();
-//       if (newToken) {
-//         setToken(newToken);
-//         localStorage.setItem("newToken");
-//         console.log("Token refreshed via hook");
-//       }
-//     }
-//     runRefresh();
-//   }, [setToken]);
-// }
-
-// export default useTokenRefresh;

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import API_BASE_URL from "../../api/api";
 
 function AddCourseForm({ onSuccess }) {
     const [formData, setFormData] = useState({
@@ -20,7 +21,7 @@ function AddCourseForm({ onSuccess }) {
 
         try {
             const token = localStorage.getItem("token");
-            const res = await fetch("http://127.0.0.1:5000/api/courses/", {
+            const res = await fetch(`${API_BASE_URL}/api/courses/`, {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json",

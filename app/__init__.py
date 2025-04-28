@@ -39,7 +39,8 @@ def create_app():
 
     @app.route("/")
     def index():
-        return "SportClub backend is up and running. Check the endpoint: https://sportclub-p8o2.onrender.com/api/courses/public"
+        return ("SportClub backend is up and running. Check the endpoint: "
+                "https://sportclub-p8o2.onrender.com/api/courses/public")
 
     # with app.app_context():
     #     db.create_all()
