@@ -149,7 +149,7 @@ function CourseClasses({ courseId, courseName, allowJoin = false, onClose, refre
 
       <ul className="space-y-4">
         {classes.map((classItem) => (
-            <li key={classItem.id} className="border p-3 rounded-md shadow-sm bg-gray-50">
+            <li key={classItem.id} className="border p-5 rounded-md shadow-sm bg-gray-50">
             <p>📅 <strong>Time:</strong> {classItem.day_of_week} – 🕒 {classItem.time}</p>
             <p>📍 <strong>Location:</strong> {classItem.location}</p>
             <p>🧑‍🏫 <strong>Trainer:</strong> {classItem.trainer}</p>

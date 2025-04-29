@@ -34,7 +34,7 @@ function Home() {
               Welcome in our Sport Club<br />"PowerPlay"!
             </h1>
       
-            <div className="flex gap-x-2">
+            <div className="flex flex-col gap-2 sm:flex-row sm:gap-x-2">
               <Link to="/login">
                 <button className="p-3 bg-blue-500 text-white rounded-full hover:bg-blue-600 shadow transition" title="Log in">
                   <LogIn size={20} />
@@ -77,8 +77,7 @@ function Home() {
             </div>
           </div>
       
-          {/* Contact Section */}
-          <div className="text-center text-gray-800 mb-8">
+          <div className="text-center text-gray-800 mt-8 mb-8">
             <h2 className="text-2xl font-semibold mb-2">Contact Us</h2>
             <p>Email: contact@sportclub.com</p>
             <p>Phone: +49 157456789</p>
