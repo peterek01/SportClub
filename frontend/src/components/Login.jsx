@@ -40,20 +40,20 @@ function Login({ setToken }) {
   };
 
   return (
-    <div className="w-full min-h-screen bg-gradient-to-br from-[#000046] to-[#1cb5e0] flex items-center justify-center p-4 sm:p-8">
+    <div className="w-full min-h-screen bg-gradient-to-br from-[#000046] to-[#1cb5e0] flex items-center justify-center p-6 sm:p-8">
       <div className="bg-white rounded-lg w-full max-w-5xl flex flex-col md:flex-row overflow-hidden font-['Nunito'] shadow-lg">
 
         <div className="hidden md:block md:w-1/2 max-h-[750px] overflow-hidden">
             <img src="/images/form-v6.jpg" alt="form" className="h-full w-full object-fill" />
         </div>
 
-        <div className="w-full md:w-1/2 p-8 md:p-10">
+        <div className="w-full md:w-1/2 p-4 md:p-10">
           <form onSubmit={handleSubmit} className="relative text-gray-800 font-bold w-full max-w-md mx-auto p-8 bg-white min-h-[500px]">
             {error && <p className="text-red-500">{error}</p>}
             <button onClick={() => navigate("/")} className="absolute top-0 right-0 z-50 flex items-center justify-center p-3 rounded-full bg-blue-600 text-white shadow-lg animate-pulse border-2 border-white hover:scale-105 hover:shadow-blue-500 transition-transform" title="Back to Home">
                 <Home size={24} strokeWidth={2.5} className="drop-shadow-glow" />
             </button>
-            <h2 className="text-[35px] text-center mt-36 mb-8">Log In</h2>
+            <h2 className="text-[35px] text-center mt-20 lg:mt-40 mb-8">Log In</h2>
 
             <div className="mb-9">
               <input 
